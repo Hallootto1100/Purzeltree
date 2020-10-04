@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
         return activeLoop.transform.position;
     }
 
-    public int getHumanCound()
+    public int getHumandCount()
     {
         return humanCount;
     }
