@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
 
     public float speedForward;
+    public float pickupForce = 3.0f;
     public float scale;
     public GameObject[] loops;
     private GameObject activeLoop;
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         transform.Translate(transform.forward * speedForward * Time.deltaTime, Space.World);
+
         float input = Input.GetAxis("Horizontal");
         Debug.Log(input);
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 36, 0) * input, 1.0f);
@@ -32,6 +34,16 @@ public class Player : MonoBehaviour
                 humanCount = 0;
             setLoop(humanCount++);
         }
+    }
+
+    public Vector3 getPlayerPosition()
+    {
+        return activeLoop.transform.position;
+    }
+
+    public int getHumanCound()
+    {
+        return humanCount;
     }
 
     public void addHuman(int count){
@@ -64,15 +76,19 @@ public class Player : MonoBehaviour
         }
 
         Quaternion rotationBackup = Quaternion.identity;
+        Vector3 positionBackup = transform.position;
 
         if(activeLoop  != null){
             rotationBackup = activeLoop.transform.rotation;
+            positionBackup = activeLoop.transform.position;
             GameObject.Destroy(activeLoop);
         }
 
-        Vector3 spawnPos = new Vector3(transform.position.x, loops[index].GetComponent<SphereCollider>().radius, transform.position.z);
-        activeLoop =  Instantiate(loops[index], spawnPos, rotationBackup);
+        // Vector3 spawnPos = new Vector3(positionBackup.x, loops[index].GetComponent<SphereCollider>().radius, positionBackup.z);
+        activeLoop =  Instantiate(loops[index], positionBackup, rotationBackup);
         activeLoop.transform.SetParent(transform);
+        activeLoop.GetComponent<Rigidbody>().AddForce(Vector3.up * pickupForce, ForceMode.Impulse);
+        activeLoop.GetComponent<Rigidbody>().maxAngularVelocity = 0;
     }
 
     private float calculateRotationSpeed(float radius)
