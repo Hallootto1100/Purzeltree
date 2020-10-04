@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
         transform.Translate(transform.forward * speedForward * Time.deltaTime, Space.World);
 
         float input = Input.GetAxis("Horizontal");
-        Debug.Log(input);
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 36, 0) * input, 1.0f);
 
         activeLoop.transform.Rotate(Vector3.right,  calculateRotationSpeed(activeLoop.GetComponent<SphereCollider>().radius) * 6 * Time.deltaTime);
