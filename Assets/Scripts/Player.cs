@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.Translate(transform.forward * speedForward * Time.deltaTime, Space.World);
+        transform.Translate(transform.forward * speedForward * Time.deltaTime, Space.World);
         float input = Input.GetAxis("Horizontal");
         Debug.Log(input);
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 36, 0) * input, 1.0f);
@@ -70,22 +70,9 @@ public class Player : MonoBehaviour
             GameObject.Destroy(activeLoop);
         }
 
-        Vector3 spawnPos = new Vector3(0, loops[index].GetComponent<SphereCollider>().radius,0);
+        Vector3 spawnPos = new Vector3(transform.position.x, loops[index].GetComponent<SphereCollider>().radius, transform.position.z);
         activeLoop =  Instantiate(loops[index], spawnPos, rotationBackup);
         activeLoop.transform.SetParent(transform);
-    }
-
-    private void newScale(GameObject theGameObject, float newSize) {
-
-        float size = theGameObject.GetComponent<Collider>().bounds.size.x;
-
-        Vector3 rescale = theGameObject.transform.localScale;
-
-        rescale = newSize * rescale / size;
-
-        theGameObject.transform.localScale = rescale;
-        theGameObject.transform.position = new Vector3(theGameObject.transform.position.x, newSize / 2, theGameObject.transform.position.z);
-
     }
 
     private float calculateRotationSpeed(float radius)
