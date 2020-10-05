@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     private GameObject activeLoop;
     private int humanCount = 0;
 
+    public AudioClip screemAudio;
+
     public float mapWidth = 10.0f;
     void Start()
     {
@@ -66,6 +68,7 @@ public class Player : MonoBehaviour
 
         if(count < 0){
             Instantiate(ragdoll, activeLoop.transform.position, Quaternion.identity).GetComponentInChildren<Rigidbody>().AddForce((Vector3.up + Vector3.forward) * 500, ForceMode.Impulse);
+            gameObject.GetComponent<AudioSource>().PlayOneShot(screemAudio);
         }
             
         
