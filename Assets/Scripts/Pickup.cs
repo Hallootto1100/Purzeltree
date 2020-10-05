@@ -8,6 +8,7 @@ public class Pickup : MonoBehaviour
 
     public int additionalHuman = 0;
     public float speedBoost = 0.0f;
+    public bool destroy = false;
 
 
     void Start()
@@ -29,6 +30,7 @@ public class Pickup : MonoBehaviour
         other.gameObject.GetComponentInParent<Player>().addHuman(additionalHuman);
         other.gameObject.GetComponentInParent<Player>().addSpeedBoost(speedBoost);
 
-        GameObject.Destroy(gameObject);
+        if(destroy)
+            GameObject.Destroy(gameObject);
     }
 }

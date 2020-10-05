@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
         if(pauseMenu)
             pauseMenu.enabled = false;   
-            
+
         Time.timeScale = 1f;
     }
 
@@ -68,6 +68,6 @@ public class GameManager : MonoBehaviour
     public void startGame()
     {
         Debug.Log("Game Started");
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("LevelZero");
     }
 }

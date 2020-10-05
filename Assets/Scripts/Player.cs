@@ -10,8 +10,11 @@ public class Player : MonoBehaviour
     public float pickupForce = 3.0f;
     public float scale;
     public GameObject[] loops;
+    public GameObject ragdoll;
     private GameObject activeLoop;
     private int humanCount = 0;
+
+    public float mapWidth = 10.0f;
     void Start()
     {
         setLoop(humanCount);
@@ -23,7 +26,11 @@ public class Player : MonoBehaviour
         transform.Translate(transform.forward * speedForward * Time.deltaTime, Space.World);
 
         float input = Input.GetAxis("Horizontal");
-        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 36, 0) * input, 1.0f);
+        Vector3 rotation = Vector3.zero;
+        if(Mathf.Abs(transform.position.x + input) < mapWidth)
+            rotation = new Vector3(0, 36, 0) * input;
+
+        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, rotation, 1.0f);
 
         activeLoop.transform.Rotate(Vector3.right,  calculateRotationSpeed(activeLoop.GetComponent<SphereCollider>().radius) * 6 * Time.deltaTime);
 
@@ -47,8 +54,20 @@ public class Player : MonoBehaviour
 
     public void addHuman(int count){
         humanCount += count;
-        if(humanCount >= loops.Length)
+        if(humanCount < 1){
+            humanCount = 1;
             return;
+        }
+
+        if(humanCount >= loops.Length){
+            humanCount = loops.Length - 1;
+            return;
+        }
+
+        if(count < 0){
+            Instantiate(ragdoll, activeLoop.transform.position, Quaternion.identity).GetComponentInChildren<Rigidbody>().AddForce((Vector3.up + Vector3.forward) * 500, ForceMode.Impulse);
+        }
+            
         
         setLoop(humanCount);
     }

@@ -22,8 +22,9 @@ public class Camera : MonoBehaviour
     void Update()
     {
         Vector3 playerPos = player.getPlayerPosition();
-        Vector3 no = offset + offset.normalized * player.getHumandCount() * humanLength / Mathf.PI;
-        transform.position = Vector3.Lerp(transform.position, playerPos - no, 0.8f * Time.deltaTime);
+        Vector3 newPos = player.getPlayerPosition() - offset - offset.normalized * player.getHumandCount() * humanLength / Mathf.PI;
+        newPos.x = 0;
+        transform.position = Vector3.Lerp(transform.position, newPos, 0.8f * Time.deltaTime);
         transform.LookAt(playerPos);
     }
 }
